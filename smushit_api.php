@@ -406,7 +406,7 @@ class SmushitApi {
 			}
 			
 			$query = http_build_query(array('task' => ($task ? $task : $this->getTask()).'-'.($subTask ? $subTask : $this->getSubTask())), '', '&');
-			$curlHandle = $this->_getCurlHandle(self::API_URL.'zip.php?'.$query);
+			$curlHandle = $this->_getCurlHandle(self::API_URL.'zip.php?'.$query, self::CURL_METHOD_POST);
 			$response = curl_exec($curlHandle);
 			
 			if ($response === false) {
@@ -418,6 +418,7 @@ class SmushitApi {
 			
 			curl_close($curlHandle);
 			$response = json_decode($response, true);
+			debug($response);
 					
 			if (!isset($response['url'])) {
 				throw new SmushitApiException('Smush it did not provide an URL to the ZIP file.');
