@@ -573,7 +573,7 @@ class SmushitImage {
 		
 		if ($binary) {
 			$finfo = finfo_open(FILEINFO_MIME);
-			$this->_dstMimeType = finfo_buffer($finfo, $binary);
+			list($this->_dstMimeType,) = explode(';', finfo_buffer($finfo, $binary));
 			finfo_close($finfo);
 		}
 		
@@ -691,7 +691,7 @@ class SmushitImage {
 		
 		if ($binary) {
 			$finfo = finfo_open(FILEINFO_MIME);
-			$this->_srcMimeType = finfo_buffer($finfo, $binary);
+			list($this->_srcMimeType,) = explode(';', finfo_buffer($finfo, $binary));
 			finfo_close($finfo);
 		}
 		
