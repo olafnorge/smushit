@@ -309,7 +309,6 @@ class SmushitApi {
 			$this->_subTask = trim($matches[1]);
 			$this->_apiRequested = true;
 			$localFiles = $remoteFiles = array();
-			$success = true;
 			
 			/* @var $SmushitImage SmushitImage */
 			foreach ($this->_images as $SmushitImage) {
@@ -336,7 +335,6 @@ class SmushitApi {
 						$curlErrorMessage = curl_error($curlHandle);
 						curl_close($curlHandle);
 						$SmushitImage->setError("An error occured while getting cURL response. cURL-Code: {$curlErrorCode} cURL-Message: {$curlErrorMessage}");
-						$success = false;
 						continue;
 					}
 					
@@ -345,7 +343,6 @@ class SmushitApi {
 					
 					if (isset($response['error'])) {
 						$SmushitImage->setError($response['error']);
-						$success = false;
 						continue;
 					}
 					
@@ -369,7 +366,6 @@ class SmushitApi {
 						$curlErrorMessage = curl_error($curlHandle);
 						curl_close($curlHandle);
 						$SmushitImage->setError("An error occured while getting cURL response. cURL-Code: {$curlErrorCode} cURL-Message: {$curlErrorMessage}");
-						$success = false;
 						continue;
 					}
 					
@@ -378,7 +374,6 @@ class SmushitApi {
 					
 					if (isset($response['error'])) {
 						$SmushitImage->setError($response['error']);
-						$success = false;
 						continue;
 					}
 					
@@ -391,11 +386,11 @@ class SmushitApi {
 			}
 			
 			if ($createZip) {
-				$zip = $this->getZip();
+				$zip = $this->getZip($this->getTask(), $this->getSubTask());
 				file_put_contents(self::$_cachePath.$this->getTask().'.zip', $zip);
 			}
 			
-			return $success;
+			return true;
 		} elseif ($requestType == self::REQUEST_TYPE_ZIP) {
 			if (is_file(self::$_cachePath.$task.'.zip')) {
 				return file_get_contents(self::$_cachePath.$task.'.zip');
@@ -405,8 +400,18 @@ class SmushitApi {
 				throw new SmushitApiException('You must not mix task and subtask. Either provide both or nothing.');
 			}
 			
+			$files = array();
+			$i = 0;
+			
+			foreach ($this->getImages() as $SmushitImage) {
+				if (!$SmushitImage->hasError()) {
+					$files["list[{$i}]"] = $SmushitImage->getDst();
+					$i++;
+				}
+			}
+			
 			$query = http_build_query(array('task' => ($task ? $task : $this->getTask()).'-'.($subTask ? $subTask : $this->getSubTask())), '', '&');
-			$curlHandle = $this->_getCurlHandle(self::API_URL.'zip.php?'.$query, self::CURL_METHOD_POST);
+			$curlHandle = $this->_getCurlHandle(self::API_URL.'zip.php?'.$query, self::CURL_METHOD_POST, $files);
 			$response = curl_exec($curlHandle);
 			
 			if ($response === false) {
