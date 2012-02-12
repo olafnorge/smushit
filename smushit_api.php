@@ -422,9 +422,7 @@ class SmushitApi {
 			}
 			
 			curl_close($curlHandle);
-			debug($response);
 			$response = json_decode($response, true);
-			debug($response);
 					
 			if (!isset($response['url'])) {
 				throw new SmushitApiException('Smush it did not provide an URL to the ZIP file.');
