@@ -56,8 +56,8 @@ class SmushitApi {
 	 */
 	public function __construct($requestBinaryData = true) {
 		$this->reset($requestBinaryData);
-		!self::$_cookieFile && self::$_cookieFile = ini_get('upload_tmp_dir').DIRECTORY_SEPARATOR.'.smushit_cookie.txt';
-		!self::$_cachePath && self::$_cachePath = ini_get('upload_tmp_dir').DIRECTORY_SEPARATOR;
+		!self::$_cookieFile && self::$_cookieFile = (php_sapi_name() == 'cli' ? DIRECTORY_SEPARATOR.'tmp' : ini_get('upload_tmp_dir').DIRECTORY_SEPARATOR).'.smushit_cookie.txt';
+		!self::$_cachePath && self::$_cachePath = (php_sapi_name() == 'cli' ? DIRECTORY_SEPARATOR.'tmp' : ini_get('upload_tmp_dir')).DIRECTORY_SEPARATOR;
 	}
 	
 	
