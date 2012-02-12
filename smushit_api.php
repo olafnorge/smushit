@@ -422,6 +422,7 @@ class SmushitApi {
 			}
 			
 			curl_close($curlHandle);
+			debug($response);
 			$response = json_decode($response, true);
 			debug($response);
 					
