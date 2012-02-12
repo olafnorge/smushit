@@ -421,7 +421,7 @@ class SmushitApi {
 				throw new SmushitApiException("An error occured while getting cURL response. cURL-Code: {$curlErrorCode} cURL-Message: {$curlErrorMessage}");
 			}
 			
-			file_put_contents(self::$_cachePath.'smushit_debug.log', $response, FILE_APPEND);
+//			file_put_contents(self::$_cachePath.'smushit_debug.log', $response, FILE_APPEND);
 			curl_close($curlHandle);
 			$response = json_decode($response, true);
 					
