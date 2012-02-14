@@ -9,8 +9,7 @@ This is the most benefit from all the other APIs at github.com.
 * No configuration needed.
 
 ## Usage
-
-### Learn or train documents:
+	$files = scandir('./image_folder');
 
 	try {
 		/* @var $SmushitApi SmushitApi */
@@ -28,6 +27,8 @@ This is the most benefit from all the other APIs at github.com.
 			}
 		}
 	} catch (Exception $Exception) {
-		trigger_error("Can not smush image. Message: {$Exception->getMessage()}\nStack: {$Exception->getTraceAsString()}", E_USER_WARNING);
+		$message = $Exception->getMessage();
+		$stack = $Exception->getTraceAsString();
+		trigger_error("Can not smush image. Message: {$message}\nStack: {$stack}", E_USER_WARNING);
 	}
 
