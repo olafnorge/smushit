@@ -1,7 +1,7 @@
 # Smush.it™ PHP-API 
 
 The SmushitApi is a nice tool to pass your images to Smush.it™.
-It supports posting local files and passing remote files like implemeted on the Smush.it™ website.
+It supports posting local files and passing remote files like implemented on the Smush.it™ website.
 It also provides the ability to download the optimized images as a ZIP file directly from Smush.it™.
 This is the most benefit from all the other APIs at github.com.
 
